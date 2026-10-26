@@ -29,6 +29,10 @@ python3 server.py
 
 Buka `http://127.0.0.1:8000/` di browser **pada komputer yang menjalankan perintah tadi**. Di Windows, jika perintah `python3` tidak tersedia tetapi Python Launcher terpasang, jalankan `py -3 server.py` dari dalam folder proyek. Bila port sibuk, gunakan `python3 server.py 8765` lalu buka `http://127.0.0.1:8765/`. Hentikan server dengan Ctrl+C. Jangan buka `index.html` langsung melalui `file://` karena `fetch()` fragmen/data perlu HTTP. Server statis seperti `python3 -m http.server` bisa memperlihatkan tampilan, tetapi tidak mendukung simulasi POST `/api/registrasi` ini.
 
+Jika saat menjalankan `python3 server.py` muncul pesan **“Port 8000 sudah digunakan”** (sebelumnya tampil sebagai `OSError: [Errno 48] Address already in use` di macOS), artinya server lain sudah mendengarkan pada port tersebut—bukan kesalahan HTML atau Python. Buka alamat server yang telah berjalan, hentikan server lama dengan Ctrl+C di terminalnya, atau pilih port lain seperti contoh di atas. Di macOS, `lsof -nP -iTCP:8000 -sTCP:LISTEN` dapat menunjukkan proses yang memakai port; pastikan itu proses proyek ini sebelum menghentikannya.
+
+**Alamat pada bilah browser harus sama dengan alamat yang dicetak `server.py`, termasuk port.** Jika menjalankan `python3 server.py 8765`, buka `http://127.0.0.1:8765/#registrasi` dari awal; jangan mengisi formulir di tab lama dari Live Server (`:5500`), server statis lain, atau `file://`. Form mengirim POST ke asal halaman yang sedang dibuka, bukan otomatis ke port Python yang kebetulan aktif. Muat ulang halaman setelah pindah alamat agar skrip terbaru terambil.
+
 `127.0.0.1` adalah alamat lokal: tautan dari komputer pengembang **tidak bisa dibuka dosen dari internet**. Untuk penilaian jarak jauh, dosen dapat mengunduh seluruh proyek dan menjalankan perintah di atas di komputernya; apabila wajib berupa situs online, perlu hosting yang menjalankan `server.py` atau backend HTTP setara. GitHub Pages hanya menyajikan berkas statis dan tidak dapat menjalankan endpoint POST demo tersebut. `server.py` ini untuk demonstrasi lokal, bukan server produksi terbuka ke internet.
 
 ## Alur teknis

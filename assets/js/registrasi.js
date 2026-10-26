@@ -89,7 +89,10 @@ window.initRegistrasi = async function initRegistrasi(root) {
     try {
       const response = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const result = await response.json().catch(() => null);
-      if (!result) throw new Error('Server tidak mendukung API registrasi. Jalankan python3 server.py, bukan server statis.');
+      if (!result) {
+        const endpoint = new URL(form.action, document.baseURI);
+        throw new Error(`API di ${endpoint.origin} tidak mengembalikan JSON (HTTP ${response.status}). Buka halaman melalui alamat yang ditampilkan oleh python3 server.py, termasuk portnya; jangan gunakan Live Server atau server statis.`);
+      }
       if (!response.ok) {
         const stale = response.status === 422 && /tidak tersedia|tidak sesuai/.test(result.message);
         throw new Error(stale ? `${result.message} Muat ulang halaman untuk memperbarui pilihan.` : result.message || `HTTP ${response.status}`);
@@ -103,7 +106,7 @@ window.initRegistrasi = async function initRegistrasi(root) {
     } catch (error) {
       if (!panel.isConnected) return;
       status.className = 'form-status failure';
-      status.textContent = `Gagal mengirim: ${error instanceof TypeError ? 'Koneksi ke server gagal. Jalankan python3 server.py.' : error.message}`;
+      status.textContent = `Gagal mengirim: ${error instanceof TypeError ? 'Koneksi ke server gagal. Buka halaman melalui alamat yang ditampilkan oleh python3 server.py, termasuk portnya.' : error.message}`;
     } finally {
       if (panel.isConnected) submit.disabled = false;
     }

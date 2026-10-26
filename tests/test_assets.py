@@ -6,10 +6,17 @@ INDEX = Path(__file__).resolve().parents[1] / 'index.html'
 REGISTRATION = INDEX.parent / 'pages/registrasi.html'
 APP_JS = INDEX.parent / 'assets/js/app.js'
 EXPLORE_JS = INDEX.parent / 'assets/js/eksplorasi.js'
+REGISTRATION_JS = INDEX.parent / 'assets/js/registrasi.js'
 REFINED_CSS = INDEX.parent / 'assets/css/refined.css'
 
 
 class AssetLoadTests(unittest.TestCase):
+    def test_non_json_registration_error_identifies_the_actual_api_origin(self):
+        script = REGISTRATION_JS.read_text(encoding='utf-8')
+        self.assertIn('new URL(form.action, document.baseURI)', script)
+        self.assertIn('response.status', script)
+        self.assertNotIn('Server tidak mendukung API registrasi. Jalankan python3 server.py, bukan server statis.', script)
+
     def test_campus_name_and_type_typography_is_less_heavy(self):
         css = REFINED_CSS.read_text(encoding='utf-8')
         self.assertRegex(css, r'\.filters label\s*\{[^}]*font-weight:600;')

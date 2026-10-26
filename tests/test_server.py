@@ -1,5 +1,6 @@
 """Regresi: server demo harus membaca data terbaru saat data JSON diperbarui."""
 import json
+import socket
 import subprocess
 import sys
 import tempfile
@@ -12,6 +13,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DemoServerTests(unittest.TestCase):
+    def test_busy_port_reports_next_step_without_traceback(self):
+        with socket.socket() as occupied:
+            occupied.bind(('127.0.0.1', 0))
+            occupied.listen()
+            port = occupied.getsockname()[1]
+            result = subprocess.run(
+                [sys.executable, str(ROOT / 'server.py'), str(port)],
+                cwd=ROOT, capture_output=True, text=True, timeout=3
+            )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(f'Port {port} sudah digunakan', result.stderr)
+        self.assertIn('python3 server.py 8765', result.stderr)
+        self.assertNotIn('Traceback', result.stderr)
+
     def test_program_outside_selected_faculty_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)

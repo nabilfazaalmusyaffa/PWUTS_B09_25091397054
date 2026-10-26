@@ -1,4 +1,5 @@
 """Server demo UTS: HTTP statis + POST registrasi tanpa penyimpanan data."""
+import errno
 import json
 import re
 import sys
@@ -58,7 +59,18 @@ class DemoHandler(SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
-    server = ThreadingHTTPServer(('127.0.0.1', port), DemoHandler)
+    try:
+        server = ThreadingHTTPServer(('127.0.0.1', port), DemoHandler)
+    except OSError as error:
+        if error.errno != errno.EADDRINUSE:
+            raise
+        print(
+            f'Port {port} sudah digunakan. Jika SmartFinder sudah berjalan, buka '
+            f'http://127.0.0.1:{port}/; atau hentikan server lama dengan Ctrl+C. '
+            'Untuk server kedua, jalankan python3 server.py 8765.',
+            file=sys.stderr,
+        )
+        raise SystemExit(1) from None
     print(f'SmartFinder demo: http://127.0.0.1:{server.server_port}', flush=True)
     try:
         server.serve_forever()
