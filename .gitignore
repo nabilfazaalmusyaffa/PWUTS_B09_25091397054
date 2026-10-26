@@ -1,0 +1,10 @@
+# Berkas lokal/hasil eksekusi, bukan bagian pengumpulan UTS.
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+.venv/
+venv/
+.idea/
+.vscode/

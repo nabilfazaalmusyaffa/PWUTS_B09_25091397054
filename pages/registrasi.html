@@ -1,0 +1,21 @@
+<div class="panel registration-panel" id="registration-panel">
+  <div class="panel-heading"><span class="eyebrow">MULAI PERJALANANMU</span><h2 id="kenalan-title" tabindex="-1">Kenalan dulu, <em>yuk.</em></h2><p>Isi data akademik dasar untuk mencoba alur registrasi. Form ini masih demonstrasi: belum membuat akun sungguhan.</p></div>
+  <form id="registration-form" action="/api/registrasi" method="post" novalidate>
+    <div class="form-grid">
+      <div class="field"><label for="name">Nama lengkap</label><input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-error"><small class="error" id="name-error"></small></div>
+      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-error"><small class="error" id="email-error"></small></div>
+      <div class="field"><label for="password">Kata sandi <span class="label-hint">minimal 8 karakter</span></label><input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="password-error"><small class="error" id="password-error"></small></div>
+      <div class="field"><label for="confirm_password">Konfirmasi kata sandi</label><input id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" required aria-describedby="confirm_password-error"><small class="error" id="confirm_password-error"></small></div>
+      <div class="field"><label for="city_id">Kota domisili <span class="label-hint">boleh berbeda dari lokasi kampus</span></label><select id="city_id" name="city_id" required aria-describedby="city_id-error"><option value="">Pilih kota domisili</option></select><small class="error" id="city_id-error"></small></div>
+      <div class="field"><label for="university_id">Kampus</label><select id="university_id" name="university_id" required aria-describedby="university_id-error"><option value="">Pilih kampus</option></select><small class="error" id="university_id-error"></small></div>
+      <div class="field"><label for="faculty_id">Fakultas</label><select id="faculty_id" name="faculty_id" required disabled aria-describedby="faculty_id-error"><option value="">Pilih kampus terlebih dahulu</option></select><small class="error" id="faculty_id-error"></small></div>
+      <div class="field"><label for="study_program_id">Program studi</label><select id="study_program_id" name="study_program_id" required disabled aria-describedby="study_program_id-error"><option value="">Pilih fakultas terlebih dahulu</option></select><small class="error" id="study_program_id-error"></small></div>
+    </div>
+    <div class="academic-progress" id="academic-progress">
+      <div class="progress-caption"><span>ARAH AKADEMIKMU</span><span id="academic-progress-text" aria-live="polite">Mulai dengan memilih kampus</span></div>
+      <div class="progress-track" role="progressbar" aria-label="Pilihan akademik" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span class="progress-fill"></span></div>
+    </div>
+    <button class="button button-primary" type="submit" id="submit-button">Coba kirim registrasi <span aria-hidden="true">→</span></button>
+    <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+  </form>
+</div>
